@@ -1,0 +1,101 @@
+JOB SCRAPER - PROJECT PROGRESS
+===============================
+
+Current Phase: 1 (Project Setup & DB)
+Last Updated: 2026-02-15
+
+PHASE 1: Project Setup + Database
+-----------------------------------
+  TASK 1: Project Setup & Configuration
+    [x] F1.1 - Repository scaffolding (directory structure, pyproject.toml, .gitignore, requirements.txt)
+    [ ] F1.2 - Central config module (config.py)
+    [ ] F1.3 - robots.txt compliance (is_allowed)
+    Tests: T1.1-T1.5 - NOT STARTED
+
+  TASK 2: Database Layer
+    [ ] F2.1 - SQLite schema (models.py) + init_db()
+    [ ] F2.2 - CRUD operations (crud.py)
+    Tests: T2.1-T2.8 - NOT STARTED
+
+PHASE 2: Base Scraper + Dedup + Logging (depends on Phase 1)
+--------------------------------------------------------------
+  TASK 3: Core Scraping Engine
+    [ ] F3.1 - Abstract BaseScraper class
+    [ ] F3.2 - Custom exceptions
+    [ ] F3.3 - Session management
+    Tests: T3.1-T3.7 - NOT STARTED
+
+  TASK 9: Duplicate Detection
+    [ ] F9.1 - Content hash dedup
+    [ ] F9.2 - URL dedup (UNIQUE constraint)
+    [ ] F9.3 - Cross-source dedup
+    [ ] F9.4 - Integration with DB insert
+    Tests: T9.1-T9.6 - NOT STARTED
+
+  TASK 10: Logging & Error Handling
+    [ ] F10.1 - Logging config
+    [ ] F10.2 - Error handling
+    [ ] F10.3 - Scrape run summary
+    Tests: T10.1-T10.5 - NOT STARTED
+
+PHASE 3: LinkedIn + ABB Scrapers (depends on Phase 2)
+-------------------------------------------------------
+  TASK 4: LinkedIn Public Scraper
+    [ ] F4.1 - RSS feed scraper
+    [ ] F4.2 - Public job page parser
+    [ ] F4.3 - Search query generation
+    Tests: T4.1-T4.6 - NOT STARTED
+
+  TASK 5 (ABB): ABB Career Page Scraper
+    [ ] F5.ABB.1 - Page fetching + pagination
+    [ ] F5.ABB.2 - Job detail parsing
+    [ ] F5.ABB.3 - Location normalization
+    Tests: T5.ABB.1-T5.ABB.6 - NOT STARTED
+
+PHASE 4: Filtering Engine (depends on Phase 1)
+------------------------------------------------
+  TASK 6: Filtering Engine
+    [ ] F6.1 - Keyword filter
+    [ ] F6.2 - Ambiguity detection
+    [ ] F6.3 - LLM filter fallback
+    [ ] F6.4 - Filter pipeline
+    Tests: T6.1-T6.14 - NOT STARTED
+
+PHASE 5: Export + CLI (depends on Phase 1 + Phase 4)
+------------------------------------------------------
+  TASK 7: Data Export
+    [ ] F7.1 - CSV export
+    [ ] F7.2 - JSON export
+    [ ] F7.3 - Export metadata
+    Tests: T7.1-T7.6 - NOT STARTED
+
+  TASK 8: CLI Interface
+    [ ] F8.1 - CLI entry point with argparse
+    [ ] F8.2 - scrape command
+    [ ] F8.3 - filter command
+    [ ] F8.4 - export command
+    [ ] F8.5 - status command
+    [ ] F8.6 - init command
+    Tests: T8.1-T8.8 - NOT STARTED
+
+PHASE 6: SICPA + Alpiq Scrapers (depends on Phase 2)
+------------------------------------------------------
+  TASK 5 (SICPA): SICPA Career Page Scraper
+    [ ] F5.SICPA.1 - Page fetching + pagination
+    [ ] F5.SICPA.2 - Job detail parsing
+    [ ] F5.SICPA.3 - Location normalization
+    Tests: T5.SICPA.1-T5.SICPA.6 - NOT STARTED
+
+  TASK 5 (Alpiq): Alpiq Career Page Scraper
+    [ ] F5.Alpiq.1 - Page fetching + pagination
+    [ ] F5.Alpiq.2 - Job detail parsing
+    [ ] F5.Alpiq.3 - Location normalization
+    Tests: T5.Alpiq.1-T5.Alpiq.6 - NOT STARTED
+
+PHASE 7: Integration & E2E Testing (depends on all above)
+-----------------------------------------------------------
+  TASK 11: Integration & E2E Testing
+    [ ] F11.1 - Full pipeline test
+    [ ] F11.2 - Filter accuracy test (20 curated jobs)
+    [ ] F11.3 - Idempotency test
+    Tests: T11.1-T11.5 - NOT STARTED
