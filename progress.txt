@@ -41,25 +41,25 @@ PHASE 2: Base Scraper + Dedup + Logging (depends on Phase 1)
 PHASE 3: LinkedIn + ABB Scrapers (depends on Phase 2)
 -------------------------------------------------------
   TASK 4: LinkedIn Public Scraper
-    [ ] F4.1 - RSS feed scraper
-    [ ] F4.2 - Public job page parser
-    [ ] F4.3 - Search query generation
-    Tests: T4.1-T4.6 - NOT STARTED
+    [x] F4.1 - RSS feed scraper
+    [x] F4.2 - Public job page parser
+    [x] F4.3 - Search query generation
+    Tests: T4.1-T4.6 - ALL PASSING (18/18)
 
   TASK 5 (ABB): ABB Career Page Scraper
-    [ ] F5.ABB.1 - Page fetching + pagination
-    [ ] F5.ABB.2 - Job detail parsing
-    [ ] F5.ABB.3 - Location normalization
-    Tests: T5.ABB.1-T5.ABB.6 - NOT STARTED
+    [x] F5.ABB.1 - Page fetching + pagination
+    [x] F5.ABB.2 - Job detail parsing
+    [x] F5.ABB.3 - Location normalization
+    Tests: T5.ABB.1-T5.ABB.6 - ALL PASSING (8/8)
 
 PHASE 4: Filtering Engine (depends on Phase 1)
 ------------------------------------------------
   TASK 6: Filtering Engine
-    [ ] F6.1 - Keyword filter
-    [ ] F6.2 - Ambiguity detection
-    [ ] F6.3 - LLM filter fallback
-    [ ] F6.4 - Filter pipeline
-    Tests: T6.1-T6.14 - NOT STARTED
+    [x] F6.1 - Keyword filter
+    [x] F6.2 - Ambiguity detection
+    [x] F6.3 - LLM filter fallback
+    [x] F6.4 - Filter pipeline
+    Tests: T6.1-T6.14 - ALL PASSING (21/21)
 
 PHASE 5: Export + CLI (depends on Phase 1 + Phase 4)
 ------------------------------------------------------
@@ -81,16 +81,16 @@ PHASE 5: Export + CLI (depends on Phase 1 + Phase 4)
 PHASE 6: SICPA + Alpiq Scrapers (depends on Phase 2)
 ------------------------------------------------------
   TASK 5 (SICPA): SICPA Career Page Scraper
-    [ ] F5.SICPA.1 - Page fetching + pagination
-    [ ] F5.SICPA.2 - Job detail parsing
-    [ ] F5.SICPA.3 - Location normalization
-    Tests: T5.SICPA.1-T5.SICPA.6 - NOT STARTED
+    [x] F5.SICPA.1 - Page fetching + pagination
+    [x] F5.SICPA.2 - Job detail parsing
+    [x] F5.SICPA.3 - Location normalization
+    Tests: T5.SICPA.1-T5.SICPA.6 - ALL PASSING (7/7)
 
   TASK 5 (Alpiq): Alpiq Career Page Scraper
-    [ ] F5.Alpiq.1 - Page fetching + pagination
-    [ ] F5.Alpiq.2 - Job detail parsing
-    [ ] F5.Alpiq.3 - Location normalization
-    Tests: T5.Alpiq.1-T5.Alpiq.6 - NOT STARTED
+    [x] F5.Alpiq.1 - Page fetching + pagination
+    [x] F5.Alpiq.2 - Job detail parsing
+    [x] F5.Alpiq.3 - Location normalization
+    Tests: T5.Alpiq.1-T5.Alpiq.6 - ALL PASSING (7/7)
 
 PHASE 7: Integration & E2E Testing (depends on all above)
 -----------------------------------------------------------
