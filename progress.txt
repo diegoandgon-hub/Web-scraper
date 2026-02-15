@@ -8,35 +8,35 @@ PHASE 1: Project Setup + Database
 -----------------------------------
   TASK 1: Project Setup & Configuration
     [x] F1.1 - Repository scaffolding (directory structure, pyproject.toml, .gitignore, requirements.txt)
-    [ ] F1.2 - Central config module (config.py)
-    [ ] F1.3 - robots.txt compliance (is_allowed)
-    Tests: T1.1-T1.5 - NOT STARTED
+    [x] F1.2 - Central config module (config.py)
+    [x] F1.3 - robots.txt compliance (is_allowed)
+    Tests: T1.1-T1.5 - ALL PASSING (9/9)
 
   TASK 2: Database Layer
-    [ ] F2.1 - SQLite schema (models.py) + init_db()
-    [ ] F2.2 - CRUD operations (crud.py)
-    Tests: T2.1-T2.8 - NOT STARTED
+    [x] F2.1 - SQLite schema (models.py) + init_db()
+    [x] F2.2 - CRUD operations (crud.py)
+    Tests: T2.1-T2.8 - ALL PASSING (24/24)
 
 PHASE 2: Base Scraper + Dedup + Logging (depends on Phase 1)
 --------------------------------------------------------------
   TASK 3: Core Scraping Engine
-    [ ] F3.1 - Abstract BaseScraper class
-    [ ] F3.2 - Custom exceptions
-    [ ] F3.3 - Session management
-    Tests: T3.1-T3.7 - NOT STARTED
+    [x] F3.1 - Abstract BaseScraper class
+    [x] F3.2 - Custom exceptions
+    [x] F3.3 - Session management
+    Tests: T3.1-T3.7 - ALL PASSING (10/10)
 
   TASK 9: Duplicate Detection
-    [ ] F9.1 - Content hash dedup
-    [ ] F9.2 - URL dedup (UNIQUE constraint)
-    [ ] F9.3 - Cross-source dedup
-    [ ] F9.4 - Integration with DB insert
-    Tests: T9.1-T9.6 - NOT STARTED
+    [x] F9.1 - Content hash dedup
+    [x] F9.2 - URL dedup (UNIQUE constraint)
+    [x] F9.3 - Cross-source dedup
+    [x] F9.4 - Integration with DB insert
+    Tests: T9.1-T9.6 - ALL PASSING (13/13)
 
   TASK 10: Logging & Error Handling
-    [ ] F10.1 - Logging config
-    [ ] F10.2 - Error handling
-    [ ] F10.3 - Scrape run summary
-    Tests: T10.1-T10.5 - NOT STARTED
+    [x] F10.1 - Logging config
+    [x] F10.2 - Error handling
+    [x] F10.3 - Scrape run summary
+    Tests: T10.1-T10.5 - ALL PASSING (10/10)
 
 PHASE 3: LinkedIn + ABB Scrapers (depends on Phase 2)
 -------------------------------------------------------
