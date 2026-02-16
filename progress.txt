@@ -64,19 +64,19 @@ PHASE 4: Filtering Engine (depends on Phase 1)
 PHASE 5: Export + CLI (depends on Phase 1 + Phase 4)
 ------------------------------------------------------
   TASK 7: Data Export
-    [ ] F7.1 - CSV export
-    [ ] F7.2 - JSON export
-    [ ] F7.3 - Export metadata
-    Tests: T7.1-T7.6 - NOT STARTED
+    [x] F7.1 - CSV export
+    [x] F7.2 - JSON export
+    [x] F7.3 - Export metadata
+    Tests: T7.1-T7.6 - ALL PASSING (10/10)
 
   TASK 8: CLI Interface
-    [ ] F8.1 - CLI entry point with argparse
-    [ ] F8.2 - scrape command
-    [ ] F8.3 - filter command
-    [ ] F8.4 - export command
-    [ ] F8.5 - status command
-    [ ] F8.6 - init command
-    Tests: T8.1-T8.8 - NOT STARTED
+    [x] F8.1 - CLI entry point with argparse
+    [x] F8.2 - scrape command
+    [x] F8.3 - filter command
+    [x] F8.4 - export command
+    [x] F8.5 - status command
+    [x] F8.6 - init command
+    Tests: T8.1-T8.8 - ALL PASSING (12/12)
 
 PHASE 6: SICPA + Alpiq Scrapers (depends on Phase 2)
 ------------------------------------------------------
@@ -95,7 +95,7 @@ PHASE 6: SICPA + Alpiq Scrapers (depends on Phase 2)
 PHASE 7: Integration & E2E Testing (depends on all above)
 -----------------------------------------------------------
   TASK 11: Integration & E2E Testing
-    [ ] F11.1 - Full pipeline test
-    [ ] F11.2 - Filter accuracy test (20 curated jobs)
-    [ ] F11.3 - Idempotency test
-    Tests: T11.1-T11.5 - NOT STARTED
+    [x] F11.1 - Full pipeline test
+    [x] F11.2 - Filter accuracy test (20 curated jobs)
+    [x] F11.3 - Idempotency test
+    Tests: T11.1-T11.5 - ALL PASSING (26/26)
