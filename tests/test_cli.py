@@ -39,21 +39,21 @@ class TestT8_1_Init:
 
 
 # ------------------------------------------------------------------
-# T8.2 - `scrape --source linkedin` calls LinkedInScraper (mocked)
+# T8.2 - `scrape --source jobup` calls JobUpScraper (mocked)
 # ------------------------------------------------------------------
 class TestT8_2_ScrapeSingle:
     @patch("job_scraper.cli.run_scrapers")
-    def test_scrape_source_linkedin(self, mock_run):
+    def test_scrape_source_jobup(self, mock_run):
         mock_run.return_value = MagicMock(
-            sources_succeeded=["linkedin"], sources_failed=[], new_jobs=5
+            sources_succeeded=["jobup"], sources_failed=[], new_jobs=5
         )
-        rc = main(["scrape", "--source", "linkedin"])
+        rc = main(["scrape", "--source", "jobup"])
 
         assert rc == 0
         mock_run.assert_called_once()
         scrapers = mock_run.call_args[0][0]
         assert len(scrapers) == 1
-        assert scrapers[0].__class__.__name__ == "LinkedInScraper"
+        assert scrapers[0].__class__.__name__ == "JobUpScraper"
 
 
 # ------------------------------------------------------------------
@@ -63,7 +63,7 @@ class TestT8_3_ScrapeAll:
     @patch("job_scraper.cli.run_scrapers")
     def test_scrape_all(self, mock_run):
         mock_run.return_value = MagicMock(
-            sources_succeeded=["linkedin", "abb", "sicpa", "alpiq"],
+            sources_succeeded=["jobup", "abb", "sicpa", "alpiq", "cern", "hitachi"],
             sources_failed=[],
             new_jobs=20,
         )
@@ -72,9 +72,9 @@ class TestT8_3_ScrapeAll:
         assert rc == 0
         mock_run.assert_called_once()
         scrapers = mock_run.call_args[0][0]
-        assert len(scrapers) == 4
+        assert len(scrapers) == 6
         names = sorted(s.__class__.__name__ for s in scrapers)
-        assert names == ["ABBScraper", "AlpiqScraper", "LinkedInScraper", "SICPAScraper"]
+        assert names == ["ABBScraper", "AlpiqScraper", "CERNScraper", "HitachiScraper", "JobUpScraper", "SICPAScraper"]
 
 
 # ------------------------------------------------------------------
@@ -189,7 +189,7 @@ class TestT8_7_Status:
             "title": "Eng A", "company": "Co", "location_city": "Geneva",
             "location_canton": "GE", "description": "D",
             "url": "https://example.com/1", "date_scraped": "2026-01-15T12:00:00",
-            "source": "linkedin",
+            "source": "jobup",
         })
         insert_job(conn, {
             "title": "Eng B", "company": "Co", "location_city": "Lausanne",
@@ -210,7 +210,7 @@ class TestT8_7_Status:
         assert "Total jobs: 2" in out
         assert "Passed: 1" in out
         assert "Rejected: 1" in out
-        assert "linkedin: 1" in out
+        assert "jobup: 1" in out
         assert "abb: 1" in out
 
 

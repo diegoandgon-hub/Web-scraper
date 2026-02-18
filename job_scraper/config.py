@@ -25,6 +25,7 @@ ROMANDIE_CITIES = {
     "Morges": "VD",
     "Vevey": "VD",
     "Renens": "VD",
+    "Prilly": "VD",
     "Bienne": "BE",
     "Biel": "BE",
     "Delémont": "JU",

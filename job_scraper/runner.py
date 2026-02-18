@@ -19,6 +19,7 @@ class RunSummary:
     sources_failed: list[str] = field(default_factory=list)
     new_jobs: int = 0
     duplicates_skipped: int = 0
+    collected_jobs: list[dict] = field(default_factory=list)
 
     def log(self) -> None:
         logger.info(
@@ -48,6 +49,7 @@ def run_scrapers(scrapers: list[BaseScraper]) -> RunSummary:
             jobs = scraper.scrape()
             summary.sources_succeeded.append(scraper.source_name)
             summary.new_jobs += len(jobs)
+            summary.collected_jobs.extend(jobs)
             logger.info(
                 "Scraper %s finished — %d jobs", scraper.source_name, len(jobs)
             )

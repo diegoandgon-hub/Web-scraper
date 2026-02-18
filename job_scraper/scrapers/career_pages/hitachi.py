@@ -1,4 +1,4 @@
-"""F5.ABB.1-3 — ABB career page scraper via Workday JSON API."""
+"""Hitachi Energy career page scraper via Workday JSON API."""
 
 from __future__ import annotations
 
@@ -14,21 +14,21 @@ from job_scraper.scrapers.career_pages.location import is_romandie, normalize_lo
 
 logger = logging.getLogger(__name__)
 
-_API_BASE = "https://abb.wd3.myworkdayjobs.com/wday/cxs/abb/External_Career_Page"
+_API_BASE = "https://hitachi.wd1.myworkdayjobs.com/wday/cxs/hitachi/hitachi"
 _JOBS_URL = f"{_API_BASE}/jobs"
 _DETAIL_URL = _API_BASE  # + externalPath
 _SWITZERLAND_FACET = "187134fccb084a0ea9b4b95f23890dbe"
 _PAGE_SIZE = 20
 
 
-class ABBScraper(BaseScraper):
-    """Scraper for ABB's career page (Workday backend)."""
+class HitachiScraper(BaseScraper):
+    """Scraper for Hitachi Energy's career page (Workday backend)."""
 
     def __init__(self) -> None:
-        super().__init__("abb")
+        super().__init__("hitachi")
 
     # ------------------------------------------------------------------
-    # F5.ABB.1 — Listing via Workday JSON API + pagination
+    # Listing parsing
     # ------------------------------------------------------------------
 
     @staticmethod
@@ -45,7 +45,7 @@ class ABBScraper(BaseScraper):
         return data.get("total", 0)
 
     # ------------------------------------------------------------------
-    # F5.ABB.2 — Job detail parsing from Workday API
+    # Detail parsing
     # ------------------------------------------------------------------
 
     @staticmethod
@@ -54,7 +54,7 @@ class ABBScraper(BaseScraper):
         info = data.get("jobPostingInfo", {})
         result: dict = {
             "title": info.get("title"),
-            "company": "ABB",
+            "company": "Hitachi Energy",
             "location": info.get("location"),
             "location_city": None,
             "location_canton": None,
@@ -76,13 +76,13 @@ class ABBScraper(BaseScraper):
         # Parse HTML description
         raw_desc = info.get("jobDescription", "")
         if raw_desc:
-            soup = BeautifulSoup(raw_desc, "lxml")
+            soup = BeautifulSoup(raw_desc, "html.parser")
             full_text = soup.get_text(separator="\n", strip=True)
             result["description"] = full_text
 
             # Try to split qualifications from description
             qual_match = re.search(
-                r"(qualifications?\s+for\s+the\s+role|your\s+background|requirements?)",
+                r"(qualifications?\s+for\s+the\s+role|your\s+background|requirements?|your\s+profile)",
                 full_text, re.I,
             )
             if qual_match:
@@ -140,7 +140,7 @@ class ABBScraper(BaseScraper):
             try:
                 data = self._fetch_listing(offset=offset)
             except Exception as exc:
-                logger.warning("ABB listing API failed at offset %d: %s", offset, exc)
+                logger.warning("Hitachi listing API failed at offset %d: %s", offset, exc)
                 break
 
             postings = self.parse_listing(data)
@@ -158,21 +158,21 @@ class ABBScraper(BaseScraper):
                     detail_data = self._fetch_detail(ext_path)
                     job = self.parse_detail(detail_data)
 
-                    # F5.ABB.3 — skip non-Romandie
+                    # Skip non-Romandie
                     if job.get("location") and not is_romandie(job["location"]):
                         logger.debug("Skipping non-Romandie job: %s", job.get("title"))
                         continue
 
-                    job["url"] = f"https://abb.wd3.myworkdayjobs.com/External_Career_Page{ext_path}"
-                    job["source"] = "abb"
+                    job["url"] = f"https://hitachi.wd1.myworkdayjobs.com/hitachi{ext_path}"
+                    job["source"] = "hitachi"
                     job["date_scraped"] = datetime.utcnow().isoformat()
                     all_jobs.append(job)
                 except Exception as exc:
-                    logger.warning("ABB detail failed %s: %s", ext_path, exc)
+                    logger.warning("Hitachi detail failed %s: %s", ext_path, exc)
 
             offset += _PAGE_SIZE
             if offset >= total:
                 break
 
-        logger.info("ABB scraper found %d jobs", len(all_jobs))
+        logger.info("Hitachi scraper found %d jobs", len(all_jobs))
         return all_jobs

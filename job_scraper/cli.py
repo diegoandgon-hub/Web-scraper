@@ -6,8 +6,9 @@ import argparse
 import sys
 
 from job_scraper.config import DATABASE_PATH, OUTPUT_DIR
-from job_scraper.db.crud import count_jobs, get_jobs
+from job_scraper.db.crud import count_jobs, get_all_content_hashes, get_jobs
 from job_scraper.db.models import init_db
+from job_scraper.dedup.deduplicator import compute_content_hash, deduplicated_insert
 from job_scraper.export.csv_export import export_csv
 from job_scraper.export.json_export import export_json
 from job_scraper.filters.pipeline import run_filters
@@ -15,14 +16,18 @@ from job_scraper.logging_config import setup_logging
 from job_scraper.runner import run_scrapers
 from job_scraper.scrapers.career_pages.abb import ABBScraper
 from job_scraper.scrapers.career_pages.alpiq import AlpiqScraper
+from job_scraper.scrapers.career_pages.cern import CERNScraper
+from job_scraper.scrapers.career_pages.hitachi import HitachiScraper
 from job_scraper.scrapers.career_pages.sicpa import SICPAScraper
-from job_scraper.scrapers.linkedin import LinkedInScraper
+from job_scraper.scrapers.jobup import JobUpScraper
 
 _SCRAPERS: dict[str, type] = {
-    "linkedin": LinkedInScraper,
+    "jobup": JobUpScraper,
     "abb": ABBScraper,
     "sicpa": SICPAScraper,
     "alpiq": AlpiqScraper,
+    "cern": CERNScraper,
+    "hitachi": HitachiScraper,
 }
 
 
@@ -76,16 +81,37 @@ def cmd_init() -> None:
 
 
 def cmd_scrape(source: str | None = None, all_sources: bool = False) -> None:
-    """F8.2 — Run specific or all scrapers."""
+    """F8.2 — Run specific or all scrapers, insert results into DB with dedup."""
     if all_sources:
         scrapers = [cls() for cls in _SCRAPERS.values()]
     else:
         scrapers = [_SCRAPERS[source]()]
 
     summary = run_scrapers(scrapers)
+
+    # Insert scraped jobs into DB with dedup
+    conn = init_db(str(DATABASE_PATH))
+    existing_hashes = get_all_content_hashes(conn)
+    inserted = 0
+    duplicates = 0
+
+    for job_dict in summary.collected_jobs:
+        h = compute_content_hash(
+            job_dict.get("title", ""),
+            job_dict.get("company", ""),
+            job_dict.get("description", ""),
+        )
+        job_dict["content_hash"] = h
+        result = deduplicated_insert(conn, job_dict, existing_hashes)
+        if result is not None:
+            inserted += 1
+        else:
+            duplicates += 1
+
+    conn.close()
     print(f"Scrape complete: {len(summary.sources_succeeded)} succeeded, "
           f"{len(summary.sources_failed)} failed, "
-          f"{summary.new_jobs} new jobs")
+          f"{inserted} new jobs inserted, {duplicates} duplicates skipped")
 
 
 def cmd_filter(use_llm: bool = False) -> None:
@@ -219,5 +245,10 @@ def main(argv: list[str] | None = None) -> int:
     return 0
 
 
-if __name__ == "__main__":
+def _entry() -> None:
+    """Console-script entry point."""
     sys.exit(main())
+
+
+if __name__ == "__main__":
+    _entry()

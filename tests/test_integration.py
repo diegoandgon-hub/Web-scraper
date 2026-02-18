@@ -44,7 +44,7 @@ def _job(**overrides):
         "experience_level": "Entry level",
         "url": "https://example.com/job/1",
         "date_scraped": "2026-02-15T12:00:00",
-        "source": "linkedin",
+        "source": "jobup",
     }
     base.update(overrides)
     return base
@@ -79,12 +79,12 @@ class TestT11_1_FullPipeline:
         """init DB -> mock scrape (LinkedIn + ABB with 1 overlap) ->
         keyword filter -> LLM filter (mocked) -> CSV export -> verify."""
 
-        # --- Scrape phase: 2 LinkedIn + 2 ABB, 1 overlapping content ---
-        linkedin_jobs = [
-            _job(url="https://linkedin.com/job/1", source="linkedin"),
+        # --- Scrape phase: 2 JobUp + 2 ABB, 1 overlapping content ---
+        jobup_jobs = [
+            _job(url="https://jobup.ch/en/jobs/detail/aaa-111/", source="jobup"),
             _job(
-                url="https://linkedin.com/job/2",
-                source="linkedin",
+                url="https://jobup.ch/en/jobs/detail/bbb-222/",
+                source="jobup",
                 title="Automation Engineer",
                 description=(
                     "Junior automation engineer position in Geneva. "
@@ -95,9 +95,9 @@ class TestT11_1_FullPipeline:
             ),
         ]
 
-        # ABB job 1 has same content as LinkedIn job 1 (cross-source dup)
+        # ABB job 1 has same content as JobUp job 1 (cross-source dup)
         abb_jobs = [
-            _job(url="https://abb.com/job/1", source="abb"),  # same content as linkedin job 1
+            _job(url="https://abb.com/job/1", source="abb"),  # same content as jobup job 1
             _job(
                 url="https://abb.com/job/2",
                 source="abb",
@@ -114,7 +114,7 @@ class TestT11_1_FullPipeline:
         # Insert via dedup pipeline (simulating what real scrapers do)
         existing_hashes = get_all_content_hashes(db)
         inserted_count = 0
-        for jobs in [linkedin_jobs, abb_jobs]:
+        for jobs in [jobup_jobs, abb_jobs]:
             for job_dict in jobs:
                 h = compute_content_hash(
                     job_dict["title"], job_dict["company"], job_dict["description"]
@@ -275,11 +275,11 @@ class TestT11_3_Idempotency:
 
     def test_cross_source_duplicate_idempotent(self, db):
         """Same content from different source is still deduplicated."""
-        job_linkedin = _job(url="https://linkedin.com/job/1", source="linkedin")
+        job_jobup = _job(url="https://jobup.ch/en/jobs/detail/aaa-111/", source="jobup")
         job_abb = _job(url="https://abb.com/job/1", source="abb")  # same content, different URL
 
         existing_hashes = get_all_content_hashes(db)
-        for j in [job_linkedin, job_abb]:
+        for j in [job_jobup, job_abb]:
             j["content_hash"] = compute_content_hash(
                 j["title"], j["company"], j["description"]
             )
